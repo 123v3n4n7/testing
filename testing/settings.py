@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-mozc(^ijxzp-ce=nxryvfyhw784jo&4l4-=50j%om&&-=1#n2i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['floating-wave-76649.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['floating-wave-76649.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
