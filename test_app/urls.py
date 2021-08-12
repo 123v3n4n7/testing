@@ -1,5 +1,4 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenRefreshView
 from knox import views as knox_views
 from .views import AnswerView, RegistrationView, LoginAPIView
 
