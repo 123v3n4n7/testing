@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-mozc(^ijxzp-ce=nxryvfyhw784jo&4l4-=50j%om&&-=1#n2i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['floating-wave-76649.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['floating-wave-76649.herokuapp.com', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -77,25 +77,22 @@ WSGI_APPLICATION = 'testing.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dc8v490uj6l94b',
+        'USER': 'sgkjkujwzymzxm',
+        'PASSWORD': '085242dea8cd9a14259862429166e3de266a236284accb96986bfa9b412123cb',
+        'HOST': 'ec2-44-195-209-130.compute-1.amazonaws.com',
+        'PORT': 5432,
     }
 }
-# DATABASES = {
-#
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'stage',
-#         'USER': 'postgres',
-#         'PASSWORD': 'secret',
-#         'HOST': 'pg_database',
-#         'PORT': 5432,
-#     }
-#
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
