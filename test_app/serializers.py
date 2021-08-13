@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from rest_framework.serializers import ModelSerializer, JSONField, ValidationError, Serializer, CharField, EmailField
+from rest_framework.reverse import reverse
+from rest_framework.serializers import ModelSerializer, JSONField, ValidationError,\
+    Serializer, CharField, EmailField, HyperlinkedModelSerializer, HyperlinkedIdentityField
 from .models import ListOfQuestion, Question, Choice, Answer
 from .functions_for_app import get_result_of_testing
 
@@ -27,10 +29,12 @@ class TestDetailSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class TestListSerializer(ModelSerializer):
+class TestListSerializer(HyperlinkedModelSerializer):
+    url = HyperlinkedIdentityField(view_name='tests-detail', read_only=True)
+
     class Meta:
         model = ListOfQuestion
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'url',)
 
 
 class AnswerSerializer(Serializer):
