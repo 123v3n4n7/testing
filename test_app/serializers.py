@@ -19,12 +19,18 @@ class QuestionSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class ListOfQuestionSerializer(ModelSerializer):
+class TestDetailSerializer(ModelSerializer):
     question = QuestionSerializer(many=True, source='question_set')
 
     class Meta:
         model = ListOfQuestion
         fields = '__all__'
+
+
+class TestListSerializer(ModelSerializer):
+    class Meta:
+        model = ListOfQuestion
+        fields = ('id', 'title')
 
 
 class AnswerSerializer(Serializer):
@@ -53,9 +59,12 @@ class AnswerSerializer(Serializer):
         right_answer_dict = {}
         result_of_testing = get_result_of_testing(test_id, right_answer_dict, answers, incorrect_answers,
                                                   correct_answers, percent_of_correct_answers)
-        answer = Answer.objects.create(user=user, test_id=ListOfQuestion.objects.filter(id=test_id)[0],
-                                       result=result_of_testing)
-        return answer
+        Answer.objects.create(user=user, test_id=ListOfQuestion.objects.filter(id=test_id)[0],
+                              percent_of_corr_answers=result_of_testing['percent_of_correct_answers'],
+                              num_of_corr_answers=result_of_testing['correct_answers'],
+                              num_of_incorr_answers=result_of_testing['incorrect_answers'])
+
+        return result_of_testing
 
 
 class UserSerializer(ModelSerializer):
@@ -72,7 +81,8 @@ class RegisterSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password', 'password2')
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True},
+                        'password2': {'write_only': True}}
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:

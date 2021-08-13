@@ -9,8 +9,8 @@ class ListOfQuestion(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = "ListOfQuestion"
-        verbose_name_plural = "ListOfQuestions"
+        verbose_name = "Тест"
+        verbose_name_plural = "Тесты"
 
 
 class Question(models.Model):
@@ -21,8 +21,8 @@ class Question(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = "Question"
-        verbose_name_plural = "Questions"
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы"
 
 
 class Choice(models.Model):
@@ -35,21 +35,25 @@ class Choice(models.Model):
 
     def save(self, *args, **kwargs):
         if self.is_right is True:
-            choices_is_right = self.question.choice_set.filter(is_right=True).first()
-            if choices_is_right is not None:
-                self.is_right = False
+            choices_is_right = self.question.choice_set.filter(is_right=True)
+            for i in choices_is_right:
+                i.is_right = False
+                i.save()
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Choice"
-        verbose_name_plural = "Choices"
+        verbose_name = "Вариант ответа"
+        verbose_name_plural = "Варианты ответа"
 
 
 class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     test_id = models.ForeignKey(ListOfQuestion, on_delete=models.CASCADE, verbose_name='Тест', default=None)
-    result = models.CharField(max_length=100, verbose_name='Результаты', default=None)
+    percent_of_corr_answers = models.DecimalField(max_digits=22, decimal_places=2, null=True,
+                                                  verbose_name='Процент правильных ответов')
+    num_of_corr_answers = models.IntegerField(null=True, verbose_name='Количество правильных ответов')
+    num_of_incorr_answers = models.IntegerField(null=True, verbose_name='Количество неправильных ответов')
 
     class Meta:
-        verbose_name = "Answer of User"
-        verbose_name_plural = "Answers of User"
+        verbose_name = "Ответ пользователя"
+        verbose_name_plural = "Ответы пользователей"

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from rest_framework.exceptions import ValidationError
 
 from test_app.models import ListOfQuestion
@@ -24,7 +25,8 @@ def get_result_of_testing(test_id, right_answer_dict, answers, incorrect_answers
         except KeyError:
             raise ValidationError(f"Нет вопроса с id {question_id}")
     if correct_answers > 0:
-        percent_of_correct_answers = correct_answers * 100 / len(right_answer_dict)
+        percent_of_correct_answers = Decimal(correct_answers * 100 / len(right_answer_dict))
+        percent_of_correct_answers = percent_of_correct_answers.quantize(Decimal('0.01'))
     elif correct_answers == 0:
         percent_of_correct_answers = 0
     elif correct_answers == len(right_answer_dict):
