@@ -35,10 +35,7 @@ class Choice(models.Model):
 
     def save(self, *args, **kwargs):
         if self.is_right is True:
-            choices_is_right = self.question.choice_set.filter(is_right=True)
-            for i in choices_is_right:
-                i.is_right = False
-                i.save()
+            self.question.choice_set.filter(is_right=True).update(is_right=False)
         super().save(*args, **kwargs)
 
     class Meta:
