@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, JSONField, ValidationError,\
     Serializer, CharField, EmailField, HyperlinkedModelSerializer, HyperlinkedIdentityField
 from .models import ListOfQuestion, Question, Choice, Answer
