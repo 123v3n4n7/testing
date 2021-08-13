@@ -15,8 +15,11 @@ def get_result_of_testing(test_id, right_answer_dict, answers, incorrect_answers
     if len(answers) < len(right_answer_dict):
         raise ValidationError("Нужно ответить на все вопросы!")
     for answer in answers:
-        question_id = answer['question_id']
-        user_answer = answer['сhoice_id']
+        try:
+            question_id = answer['question_id']
+            user_answer = answer['сhoice_id']
+        except KeyError:
+            raise ValidationError(f"В ответе нет id вопроса или id варианта ответа")
         try:
             if user_answer != right_answer_dict[question_id]:
                 incorrect_answers += 1
