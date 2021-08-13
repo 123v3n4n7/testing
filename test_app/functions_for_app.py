@@ -1,8 +1,6 @@
 from decimal import Decimal
 from rest_framework.exceptions import ValidationError
 
-from test_app.models import ListOfQuestion
-
 
 def get_result_of_testing(answers, test):
     correct_answers = 0
@@ -14,6 +12,10 @@ def get_result_of_testing(answers, test):
     if len(answers) < len(right_answer_dict):
         raise ValidationError("Нужно ответить на все вопросы!")
     for answer in answers:
+        if type(answer) is not dict:
+            raise ValidationError('answer должен быть словарём в виде:'
+                                  '{"question_id": id-вопроса,'
+                                  ' "сhoice_id": id-ответа}')
         try:
             question_id = answer['question_id']
             user_answer = answer['сhoice_id']

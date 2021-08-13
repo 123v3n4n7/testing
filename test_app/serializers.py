@@ -38,8 +38,10 @@ class AnswerSerializer(Serializer):
     test_id = JSONField()
 
     def validate_answers(self, answers):
-        if not answers:
-            raise ValidationError("Значение answers не должно быть пустым")
+        if not answers or type(answers) is not list:
+            raise ValidationError('Значение answers не должно быть пустым и должно быть списком с элементами:'
+                                  '{"question_id": id-вопроса,'
+                                  ' "сhoice_id": id-ответа}')
         return answers
 
     def validate_test_id(self, test_id):
