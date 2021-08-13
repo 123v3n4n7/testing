@@ -53,13 +53,12 @@ class AnswerSerializer(Serializer):
         answers = self.data['answers']
         test_id = self.data['test_id']
         user = self.context.user
-        correct_answers = 0
-        incorrect_answers = 0
-        percent_of_correct_answers = 0
-        right_answer_dict = {}
-        result_of_testing = get_result_of_testing(test_id, right_answer_dict, answers, incorrect_answers,
-                                                  correct_answers, percent_of_correct_answers)
-        Answer.objects.create(user=user, test_id=ListOfQuestion.objects.filter(id=test_id)[0],
+        try:
+            test = ListOfQuestion.objects.filter(id=test_id)[0]
+        except IndexError:
+            raise ValidationError(f"Нет теста с id {test_id}!")
+        result_of_testing = get_result_of_testing(answers, test)
+        Answer.objects.create(user=user, test_id=test,
                               percent_of_corr_answers=result_of_testing['percent_of_correct_answers'],
                               num_of_corr_answers=result_of_testing['correct_answers'],
                               num_of_incorr_answers=result_of_testing['incorrect_answers'])

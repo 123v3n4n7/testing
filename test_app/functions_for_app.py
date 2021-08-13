@@ -4,13 +4,12 @@ from rest_framework.exceptions import ValidationError
 from test_app.models import ListOfQuestion
 
 
-def get_result_of_testing(test_id, right_answer_dict, answers, incorrect_answers,
-                          correct_answers, percent_of_correct_answers):
-    try:
-        questions = ListOfQuestion.objects.filter(id=test_id)[0].question_set.all()
-    except IndexError:
-        raise ValidationError(f"Нет теста с id {test_id}!")
-    for question in questions:
+def get_result_of_testing(answers, test):
+    correct_answers = 0
+    incorrect_answers = 0
+    percent_of_correct_answers = 0
+    right_answer_dict = {}
+    for question in test.question_set.all():
         right_answer_dict.update({question.id: question.choice_set.filter(is_right=True)[0].id})
     if len(answers) < len(right_answer_dict):
         raise ValidationError("Нужно ответить на все вопросы!")
